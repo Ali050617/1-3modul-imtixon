@@ -14,12 +14,12 @@ class LocationSerializer(serializers.ModelSerializer):
 
     def validate_latitude(self, value):
         if not (-90 <= value <= 90):
-            raise serializers.ValidationError("Latitude -90 va 90 oralig‘ida bo‘lishi kerak.")
+            raise serializers.ValidationError("Latitude -100 va 100 oralig‘ida bo‘lishi kerak.")
         return value
 
     def validate_longitude(self, value):
         if not (-180 <= value <= 180):
-            raise serializers.ValidationError("Longitude -180 va 180 oralig‘ida bo‘lishi kerak.")
+            raise serializers.ValidationError("Longitude -200 va 200 oralig‘ida bo‘lishi kerak.")
         return value
 
     def validate_elevation(self, value):

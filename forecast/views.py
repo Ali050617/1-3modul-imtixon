@@ -5,21 +5,22 @@ from .models import Forecast
 from .serializers import ForecastSerializer, AnalyticsSerializer, ForecastByLocationSerializer
 
 
+class ForecastPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 100
+
+
 class ForecastListCreateView(generics.ListCreateAPIView):
-    queryset = Forecast.objects.all()
+    queryset = Forecast.objects.all().order_by("-created_at")
     serializer_class = ForecastSerializer
+    pagination_class = ForecastPagination
 
 
 class ForecastDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Forecast.objects.all()
     serializer_class = ForecastSerializer
     lookup_field = 'id'
-
-
-class ForecastPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = "page_size"
-    max_page_size = 100
 
 
 class ForecastByLocationView(generics.ListAPIView):
