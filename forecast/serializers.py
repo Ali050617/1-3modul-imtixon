@@ -11,12 +11,14 @@ class LocationShortSerializer(serializers.ModelSerializer):
 
 
 class ForecastByLocationSerializer(serializers.ModelSerializer):
+    location = LocationShortSerializer(read_only=True)
+
     class Meta:
         model = Forecast
         fields = [
-            "id", "forecast_date", "temperature_min", "temperature_max",
-            "humidity", "precipitation_probability", "wind_speed",
-            "wind_direction", "created_at"
+            "id", "location", "forecast_date", "temperature_min",
+            "temperature_max", "humidity", "precipitation_probability",
+            "wind_speed", "wind_direction", "created_at"
         ]
 
 
@@ -38,7 +40,11 @@ class ForecastSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         location_data = representation.pop("location_details")
-        ordered_data = OrderedDict([("id", representation["id"]), ("location", location_data)] + list(representation.items()))
+        ordered_data = OrderedDict([
+            ("id", representation.pop("id")),
+            ("location", location_data),
+            *representation.items()
+        ])
         return ordered_data
 
 
